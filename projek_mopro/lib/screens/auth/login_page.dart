@@ -7,6 +7,7 @@ import '../../widgets/snackbar_helper.dart';
 import '../main_page.dart';
 import '../admin/admin_dashboard.dart';
 import 'register_page.dart';
+import 'forgot_password_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -84,6 +85,23 @@ class _LoginPageState extends State<LoginPage> {
                   label: "Password",
                   icon: Icons.lock_outline,
                   isPassword: true,
+                ),
+                const SizedBox(height: 10),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const ForgotPasswordPage()),
+                    ),
+                    child: const Text(
+                      "Lupa Password?",
+                      style: TextStyle(
+                        color: primaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 30),
                 SizedBox(

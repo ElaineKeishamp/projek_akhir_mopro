@@ -7,6 +7,7 @@ import '../../widgets/snackbar_helper.dart';
 import 'edit_profile_page.dart';
 import '../auth/login_page.dart';
 import '../orders/filtered_orders_page.dart';
+import '../about_page.dart';
 
 class ProfilePage extends StatelessWidget {
   final UserData user;
@@ -331,6 +332,17 @@ class ProfilePage extends StatelessWidget {
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
               onTap: () {
                 // Navigate to help center
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.info_outline, color: primaryColor),
+              title: const Text("Tentang Aplikasi"),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const AboutPage()),
+                );
               },
             ),
             ListTile(
