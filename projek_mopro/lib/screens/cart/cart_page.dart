@@ -117,7 +117,54 @@ class _CartPageState extends State<CartPage> {
     return Scaffold(
       appBar: AppBar(title: const Text("Keranjang")),
       body: widget.cart.isEmpty
-          ? const Center(child: Text("Keranjang Kosong"))
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.shopping_cart_outlined,
+                    size: 100,
+                    color: Colors.grey[300],
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    "Keranjang Anda Masih Kosong",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    "Yuk, mulai belanja kebutuhan kampusmu!",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  ElevatedButton.icon(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(Icons.shopping_bag, color: Colors.white),
+                    label: const Text(
+                      "Mulai Belanja",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryColor,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 30,
+                        vertical: 15,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
           : ListView.builder(
               itemCount: widget.cart.length,
               itemBuilder: (c, i) => Card(
