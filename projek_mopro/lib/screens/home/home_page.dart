@@ -9,6 +9,8 @@ import '../../utils/image_helper.dart';
 import '../../widgets/snackbar_helper.dart';
 import '../product/product_detail_page.dart';
 import '../product/add_product_page.dart';
+import '../product/wishlist_page.dart';
+import 'notification_page.dart';
 
 class HomePage extends StatefulWidget {
   final UserData user;
@@ -130,8 +132,34 @@ class _HomePageState extends State<HomePage> {
                             )
                           ],
                         ),
-                        CircleAvatar(
-                          backgroundImage: getDynamicImage(widget.user.img),
+                        Row(
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.notifications_outlined, color: Colors.white),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => NotificationPage(user: widget.user),
+                                  ),
+                                );
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.favorite_border, color: Colors.white),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => WishlistPage(user: widget.user),
+                                  ),
+                                );
+                              },
+                            ),
+                            CircleAvatar(
+                              backgroundImage: getDynamicImage(widget.user.img),
+                            ),
+                          ],
                         )
                       ],
                     ),

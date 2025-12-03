@@ -306,4 +306,72 @@ class FirebaseService {
           return {'status': 'success', 'imgUrl': imgUrl.isNotEmpty ? imgUrl : null};
       } catch (e) { return {'status': 'error', 'message': e.toString()}; }
   }
+
+  // Wishlist Methods
+  Future<void> addToWishlist(String productId, String userId) async {
+    try {
+      await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('wishlist')
+          .doc(productId)
+          .set({
+        'addedAt': FieldValue.serverTimestamp(),
+      });
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> removeFromWishlist(String productId, String userId) async {
+    try {
+      await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('wishlist')
+          .doc(productId)
+          .delete();
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<bool> checkWishlistStatus(String productId, String userId) async {
+    try {
+      final doc = await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('wishlist')
+          .doc(productId)
+          .get();
+      return doc.exists;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Stream<QuerySnapshot> getWishlist(String userId) {
+    return _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('wishlist')
+        .orderBy('addedAt', descending: true)
+        .snapshots();
+  }
+
+  // Notification Methods
+  Stream<QuerySnapshot> getNotifications(String userId) {
+    return _firestore
+        .collection('notifications')
+        .where('userId', isEqualTo: userId)
+        .orderBy('createdAt', descending: true)
+        .snapshots();
+  }
+
+  Future<void> markNotificationRead(String notificationId) async {
+    await _firestore
+        .collection('notifications')
+        .doc(notificationId)
+        .update({'isRead': true});
+  }
 }

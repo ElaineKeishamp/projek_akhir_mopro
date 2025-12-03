@@ -21,11 +21,39 @@ class ProductDetailPage extends StatefulWidget {
 class _ProductDetailPageState extends State<ProductDetailPage> {
   List<Map<String, dynamic>> _reviews = [];
   bool _loadingReviews = true;
+  bool _isWishlisted = false;
 
   @override
   void initState() {
     super.initState();
     _loadReviews();
+    _checkWishlistStatus();
+  }
+
+  void _checkWishlistStatus() async {
+    bool status = await FirebaseService().checkWishlistStatus(widget.product.id, widget.user.id);
+    if (mounted) {
+      setState(() {
+        _isWishlisted = status;
+      });
+    }
+  }
+
+  void _toggleWishlist() async {
+    if (_isWishlisted) {
+      await FirebaseService().removeFromWishlist(widget.product.id, widget.user.id);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Removed from wishlist")));
+      }
+    } else {
+      await FirebaseService().addToWishlist(widget.product.id, widget.user.id);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Added to wishlist")));
+      }
+    }
+    setState(() {
+      _isWishlisted = !_isWishlisted;
+    });
   }
 
   void _loadReviews() async {
@@ -44,6 +72,22 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           SliverAppBar(
             expandedHeight: 300,
             pinned: true,
+            actions: [
+              Container(
+                margin: const EdgeInsets.only(right: 16),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.8),
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                  icon: Icon(
+                    _isWishlisted ? Icons.favorite : Icons.favorite_border,
+                    color: _isWishlisted ? Colors.red : Colors.black,
+                  ),
+                  onPressed: _toggleWishlist,
+                ),
+              ),
+            ],
             flexibleSpace: FlexibleSpaceBar(
               background: Hero(
                 tag: widget.product.id,
